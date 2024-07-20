@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Infotech-Register{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'index.css' %}">{% endblock %}
+{% block content %}
+
+<header>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Apply for Loan</h1>
+            <p>Get the best loan offers at the click of a button.</p>
+            <a href="#loan-application" class="hero-button">Apply Now</a>
+        </div>
+    </div>
+</header>
+
+<section class="team-section">
+    <div class="container">
+        <h2 class="section-title">Our Team</h2>
+        <div class="team-cards">
+            <div class="team-card">
+                <img src="https://via.placeholder.com/150" alt="Team Member">
+                <h3>Aman Rana</h3>
+               
+            </div>
+            <div class="team-card">
+                <img src="https://via.placeholder.com/150" alt="Team Member">
+                <h3>Chirag N</h3>
+                
+            </div>
+            <div class="team-card">
+                <img src="https://via.placeholder.com/150" alt="Team Member">
+                <h3>Sandeep Kumar</h3>
+               
+            </div>
+            <div class="team-card">
+                <img src="https://via.placeholder.com/150" alt="Team Member">
+                <h3>Harish Kumar Patha</h3>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

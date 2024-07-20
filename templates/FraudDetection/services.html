@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Infotech-Register{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'service.css' %}">{% endblock %}
+{% block content %}
+
+
+<div class="container-fluid">
+    <h1 class="text-center mt-5 display-3 fw-bold">Our <span class="theme-text">Services</span></h1>
+    <hr class="mx-auto mb-5 w-25">
+    <div class="row mb-5">
+        <div class="col-12 col-sm-6 col-md-3 m-auto">
+            <a href="{% url 'fraud-application' %}" class="special">
+            <!-- card starts here -->
+            <div class="card shadow">
+                <img src="{% static 'images/noun-fraud-3842689.svg' %}" alt="" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="text-center">Fraud Detection</h3>
+                    <hr class="mx-auto w-75">
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut eligendi soluta est veniam sequi
+                        nemo, quas delectus eveniet ducimus rem animi. Natus non earum deleniti aliquam
+                    </p>
+                </div>
+            </div>
+
+        </a>
+            <!-- card ends here -->
+        </div>
+        <!-- col ends here -->
+        <div class="col-12 col-sm-6 col-md-3 m-auto">
+            <a href="{% url 'loan-application' %}" class="special">
+            <!-- card starts here -->
+            <div class="card shadow">
+                <img src="images/app.svg" alt="" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="text-center">Loan Application</h3>
+                    <hr class="mx-auto w-75">
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut eligendi soluta est veniam sequi
+                        nemo, quas delectus eveniet ducimus rem animi. Natus non earum deleniti aliquam
+                    </p>
+                </div>
+            </div>
+            </a>
+            <!-- card ends here -->
+        </div>
+        <!-- col ends here -->
+        <div class="col-12 col-sm-6 col-md-3 m-auto">
+            <a href="{% url 'gold-price-prediction' %}" class="special">
+            <!-- card starts here -->
+            <div class="card shadow">
+                <img src="images/dm.svg" alt="" class="card-img-top">
+                <div class="card-body">
+                    <h3 class="text-center">Gold Price Prediction</h3>
+                    <hr class="mx-auto w-75">
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut eligendi soluta est veniam sequi
+                        nemo, quas delectus eveniet ducimus rem animi. Natus non earum deleniti aliquam
+                    </p>
+                </div>
+            </div>
+            </a>
+            <!-- card ends here -->
+        </div>
+        <!-- col ends here -->
+       
+        <!-- col ends here -->
+    </div>
+</div>
+
+{% endblock content %}

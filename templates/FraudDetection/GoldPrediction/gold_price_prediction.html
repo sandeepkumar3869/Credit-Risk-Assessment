@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Gold Price Prediction{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'auth/style.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="title">Gold Price Prediction</div>
+    <div class="content">
+        <form id="goldForm" method="post">
+            {% csrf_token %}
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Open Price</span>
+                    {{ form.open_price }}
+                </div>
+                <div class="input-box">
+                    <span class="details">High Price</span>
+                    {{ form.high_price }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Low Price</span>
+                    {{ form.low_price }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Volume</span>
+                    {{ form.volume }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Change %</span>
+                    {{ form.change_percent }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Month</span>
+                    {{ form.month }}
+                </div>
+            </div>
+            <div class="button">
+                <input type="button" value="Predict Price" onclick="submitForm()">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function submitForm() {
+    const form = document.getElementById('goldForm');
+    const formData = new FormData(form);
+
+    fetch("{% url 'gold-price-prediction' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.prediction) {
+            Swal.fire({
+                icon: 'success',
+                title: `Predicted Price: ${data.prediction}`,
+                text: 'The predicted gold price is based on the provided features.'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<ul>' + Object.keys(data.errors).map(key => '<li>' + data.errors[key].join(', ') + '</li>').join('') + '</ul>'
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: error.toString()
+        });
+    });
+}
+</script>
+
+{% endblock content %}

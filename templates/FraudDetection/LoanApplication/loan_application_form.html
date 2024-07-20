@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Infotech-Register{% endblock %}
+{% block style %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="{% static 'auth/style.css' %}">{% endblock %}
+
+{% block content %}
+
+
+
+{% if form.errors %}
+<div class="alert alert-danger text-center" role="alert">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+
+<div class="container">
+
+    <div class="title">Loan Application</div>
+    <div class="content">
+        <form method="post" id="loanForm" action="{% url 'loan-application' %}">
+            {% csrf_token %}
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Gender</span>
+                    {{ form.gender }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Married</span>
+                    {{ form.married }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Dependents</span>
+                    {{ form.dependents }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Education</span>
+                    {{ form.education }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Self Employed</span>
+                    {{ form.self_employed }}
+                </div>
+
+                <div class="input-box">
+                    <span class="details">Application Income</span>
+                    {{ form.applicant_income }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Coapplicant Income</span>
+                    {{ form.coapplicant_income }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Loan Amount</span>
+                    {{ form.loan_amount }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Loan Amount Term</span>
+                    {{ form.loan_amount_term }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Credit history</span>
+                    {{ form.credit_history }}
+                </div>
+                <div class="input-box">
+                    <span class="details">Area</span>
+                    {{ form.property_area }}
+                </div>
+            </div>
+            
+    <!-- </div> -->
+    <div class="button">
+        <input type="button" value="Check Loan Status!!" onclick="submitForm()">
+    </div>
+    </form>
+</div>
+</div>
+
+<script>
+    function submitForm() {
+        const form = document.getElementById('loanForm');
+        const formData = new FormData(form);
+
+        fetch("{% url 'loan-application' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.errors) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<ul>' + Object.keys(data.errors).map(key => '<li>' + data.errors[key].join(', ') + '</li>').join('') + '</ul>'
+                });
+            } else {
+                Swal.fire({
+                    icon: data.loan_status === "True" ? 'success' : 'error',
+                    title: `Loan Status: ${data.loan_status === "True" ? 'Approved' : 'Not Approved'}`,
+                    html: `<p>Details:</p>
+                           <ul>
+                               ${Object.keys(data).map(key => `<li>${key}: ${data[key]}</li>`).join('')}
+                           </ul>`
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: 'Please try again later.'
+            });
+        });
+    }
+</script>
+
+{% endblock content %}

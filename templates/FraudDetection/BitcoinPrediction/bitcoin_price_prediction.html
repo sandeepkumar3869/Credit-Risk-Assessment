@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Bitcoin Price Prediction{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'auth/style.css' %}">{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="title">Bitcoin Price Prediction</div>
+    <div class="content">
+        <form id="bitcoinForm">
+            {% csrf_token %}
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Open Price</span>
+                    <input type="number" name="open_price" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">High Price</span>
+                    <input type="number" name="high_price" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Low Price</span>
+                    <input type="number" name="low_price" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Adj Close Price</span>
+                    <input type="number" name="adj_close" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Volume</span>
+                    <input type="number" name="volume" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Coin</span>
+                    <input type="number" name="coin" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Year</span>
+                    <input type="number" name="year" required>
+                </div>
+            </div>
+            <div class="button">
+                <input type="button" value="Predict Price Movement" onclick="submitForm()">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function submitForm() {
+    const form = document.getElementById('bitcoinForm');
+    const formData = new FormData(form);
+
+    fetch("{% url 'bitcoin-price-prediction' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.errors) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<ul>' + Object.keys(data.errors).map(key => '<li>' + data.errors[key].join(', ') + '</li>').join('') + '</ul>'
+            });
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: `Prediction: ${data.prediction}`,
+                text: `The model predicts that the price will ${data.prediction.toLowerCase()} with probabilities ${data.probabilities}`
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            footer: error.toString()
+        });
+    });
+}
+</script>
+
+{% endblock content %}

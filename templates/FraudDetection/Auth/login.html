@@ -1,0 +1,91 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Login{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'auth/login.css' %}">{% endblock %}
+{% block content %}
+
+<!-- <div class="container mt-5 mb-5">
+  
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">User Login</h2>
+            <form method="post" action="{% url 'login' %}" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" id="validationCustomUsername" aria-describedby="inputGroupPrepend" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please enter your email.
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" name="password" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please enter your password.
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6 text-center">
+            <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-link">Register</a></p>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="container">
+    <input type="checkbox" id="flip">
+    <div class="cover">
+      <div class="front">
+        <img src="https://www.codingnepalweb.com/demos/login-and-registration-form-in-html-css/images/frontImg.jpg" alt="">
+        <div class="text">
+          <span class="text-1">Every new friend is a <br> new adventure</span>
+          <span class="text-2">Let's get connected</span>
+        </div>
+      </div>
+      <div class="back">
+        <!--<img class="backImg" src="images/backImg.jpg" alt="">-->
+        <div class="text">
+          <span class="text-1">Complete miles of journey <br> with one step</span>
+          <span class="text-2">Let's get started</span>
+        </div>
+      </div>
+    </div>
+    <div class="forms">
+        <div class="form-content">
+          <div class="login-form">
+            <div class="title">Login</div>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input type="text" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Enter your password" required>
+              </div>
+          
+              <div class="button input-box">
+                <input type="submit" value="Sumbit">
+              </div>
+              <div class="text sign-up-text">Don't have an account? <a href="{% url 'register' %}">Sigup now</a></div>
+            </div>
+        </form>
+      </div>
+        
+    </div>
+    </div>
+    </div>
+  </div>
+{% endblock content %}

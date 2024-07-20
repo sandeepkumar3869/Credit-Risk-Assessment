@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head_title %}Credit Card Fraud Detection{% endblock %}
+{% block style %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="{% static 'auth/style.css' %}">{% endblock %}
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger text-center" role="alert">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<div class="container">
+    <div class="title">Credit Card Fraud Detection</div>
+    <div class="content">
+        <form method="post" id="fraudForm" action="{% url 'fraud-application' %}">
+            {% csrf_token %}
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Age</span>
+                    {{ form.age }}
+                </div>
+                <div class="input-box">
+                    <span class="details">PAY_0</span>
+                    {{ form.pay_0 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">PAY_2</span>
+                    {{ form.pay_2 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">PAY_3</span>
+                    {{ form.pay_3 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">PAY_4</span>
+                    {{ form.pay_4 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">PAY_5</span>
+                    {{ form.pay_5 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">PAY_6</span>
+                    {{ form.pay_6 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">BILL_AMT1</span>
+                    {{ form.bill_amt1 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">BILL_AMT2</span>
+                    {{ form.bill_amt2 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">BILL_AMT3</span>
+                    {{ form.bill_amt3 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">BILL_AMT4</span>
+                    {{ form.bill_amt4 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">BILL_AMT5</span>
+                    {{ form.bill_amt5 }}
+                </div>
+                <div class="input-box">
+                    <span class="details">BILL_AMT6</span>
+                    {{ form.bill_amt6 }}
+                </div>
+            </div>
+            
+            <div class="button">
+                <input type="button" value="Check Fraud Status!!" onclick="submitForm()">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function submitForm() {
+        const form = document.getElementById('fraudForm');
+        const formData = new FormData(form);
+    
+        fetch("{% url 'fraud-application' %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.errors) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: '<ul>' + Object.keys(data.errors).map(key => '<li>' + data.errors[key].join(', ') + '</li>').join('') + '</ul>'
+                });
+            } else {
+                Swal.fire({
+                    icon: data.status === "Fraud" ? 'error' : 'success',
+                    title: `Status: ${data.status}`,
+                    html: `<p>Details:</p>
+                           <ul>
+                               ${Object.keys(data.criteria).map(key => `<li>${key}: ${data.criteria[key]}</li>`).join('')}
+                           </ul>`
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    </script>
+    
+
+{% endblock content %}
